@@ -1,0 +1,61 @@
+# **www.elementsofai.com**
+
+> *(Burada bulunan tüm içerikler Google Translate ile direkt çevrim ile aramalarda bulunması ve ilk bilgilendirme amacıyla yapılmıştır. Kursa kaydolmanız durumunda direkt sayfa çevir ile kursa sayfasından da takip edilebilir.)*
+
+### Bölüm 1
+
+## AI'ya Giriş
+
+AI'ya Giriş, AI'nın ne olduğunu, AI ile neyin mümkün olduğunu (mümkün değildir) ve yaşamımızı nasıl etkilediğini (karmaşık bir matematik veya programlama gerektirmeden) öğrenmek isteyen herkes için ücretsiz bir çevrimiçi derstir.
+
+ (https://course.elementsofai.com/)
+
+### Bölüm 2, 2019’da geliyor
+
+## AI oluşturma
+
+AI oluşturma, AI yöntemleri oluşturmayı mümkün kılan gerçek algoritmalar hakkında daha fazla bilgi edinebileceğiniz ücretsiz bir çevrimiçi kurstur. Kurstan en iyi şekilde yararlanmak için bazı temel [Python programlama](https://www.codecademy.com/learn/learn-python) becerileri önerilir.
+
+Kurs bittiğinde bilen ilk kişi olmak için bültenimize kaydolun.
+
+
+
+
+
+> \- AI'nın başarılı olması için sadece onu geliştirmek zorunda değiliz; AI kullanmanın çeşitli yollarını bulmak için de çalışmalıyız. Üstelik sadece mühendislere bağlı değil, bu yüzden AI kursunun Elements kursuna katılmak için ücretsiz olması harika.
+
+Elina Lepomäki ,Parlamento Üyesi
+
+> \- Bu fikrin basit bir nordic halkası var: Ülke nüfusunun yüzde 1'ini ya da yaklaşık 55.000 kişiye, yapay teknolojinin temelindeki temel kavramları öğreterek başlayın ve önümüzdeki birkaç yıl içinde yavaş yavaş bu sayı üzerine  edin.
+
+[Politico ,Finlands grand AI deneyi →](https://www.politico.eu/article/finland-one-percent-ai-artificial-intelligence-courses-learning-training/)
+
+> \- AI, toplumumuz üzerinde elektrik kadar büyük bir etkiye sahip olacak
+
+Risto Siilasmaa ,yönetim kurulu başkanı, Nokia
+
+
+
+
+##  Şimdiye kadarki hikayemiz
+
+2018 baharında, Reaktor ve Helsinki Üniversitesi, insanlara tehdit edilmeksizin yapay zeka ile güçlendirilmelerinde yardımcı olmak amacıyla bir araya geldi. Birlikte, AI'nın temellerini, geniş bir geçmişe sahip insanlara AI'nın temellerini öğretmek için inşa ettiler.
+
+
+
+### 170.000 öğrenci
+
+AI kursunun Öğeleri için 170.000'den fazla öğrenci kaydoldu.
+
+### 110 ülke
+
+Kurs, 110'dan fazla ülkeden mezun öğrencilerle birlikte dünya çapında yayıldı.
+
+### % 40 kadın
+
+Kurs katılımcılarının yaklaşık% 40'ı kadındır, bilgisayar bilimi kursları için ortalamanın iki katından fazla.
+
+![Reaktor-elementler mezuniyet-2018-13](https://elementsofai.s3.amazonaws.com/_800xAUTO_crop_center-center_75_none/reaktor-elements-graduation-2018-13_190219_061335.jpg?mtime=20190219071335)
+
+![Reaktor-elementler mezuniyet-2018-7](https://elementsofai.s3.amazonaws.com/_800xAUTO_crop_center-center_75_none/reaktor-elements-graduation-2018-7_190219_061333.jpg?mtime=20190219071333)
+
