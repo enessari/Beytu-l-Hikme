@@ -36,14 +36,15 @@ Güçlü Bayes, önceki ihtimalleri sonraki ihtimallere çevirme kuralı - ta-da
 
 Şimdi muhtemelen düşünüyorsun: Bekle, formül bu mu? Bu çok korkutucu bir çarpma! Formül bu - basit demiştik, değil mi? Basit bir çarpımın her türlü inanılmaz derecede kullanışlı uygulama için kullanılabileceğini hayal bile edemezsiniz, ancak olabilir. Bunu gösterecek birkaç örnek inceleyeceğiz.
 
-Not
-
-## Bayes birçok formları
-
-Aşağıdaki alıştırmalar ile ilgili herhangi bir problem yaşarsanız, yukarıdaki materyali birkaç defa okumanız ve biraz ara vermeniz gerekebilir ve eğer yeterli olmazsa, çevrimiçi olarak daha fazla materyal arayabilirsiniz. Sadece bir tavsiye: Bayes kuralının yazılabileceği birçok farklı form vardır ve kullandığımız ihtimaller formu en yaygın olanı değildir. İşte faydalı bulabileceğiniz birkaç link.
-
-- [Matematik Doktoru: Bayes Teoremi ve tıbbi testler](https://www.youtube.com/watch?v=tRE6mKAIkno)
-- [Daha İyi Açıklaması: Bayes Teoremini Oranlarla Anlamak](https://betterexplained.com/articles/understanding-bayes-theorem-with-ratios/)
+> Not
+>
+> ## Bayes birçok formları
+>
+> Aşağıdaki alıştırmalar ile ilgili herhangi bir problem yaşarsanız, yukarıdaki materyali birkaç defa okumanız ve biraz ara vermeniz gerekebilir ve eğer yeterli olmazsa, çevrimiçi olarak daha fazla materyal arayabilirsiniz. Sadece bir tavsiye: Bayes kuralının yazılabileceği birçok farklı form vardır ve kullandığımız ihtimaller formu en yaygın olanı değildir. İşte faydalı bulabileceğiniz birkaç link.
+>
+> - [Matematik Doktoru: Bayes Teoremi ve tıbbi testler](https://www.youtube.com/watch?v=tRE6mKAIkno)
+> - [Daha İyi Açıklaması: Bayes Teoremini Oranlarla Anlamak](https://betterexplained.com/articles/understanding-bayes-theorem-with-ratios/)
+>
 
 
 
@@ -59,15 +60,23 @@ https://course.elementsofai.com/3/2
 
 İlk gerçekçi uygulamamız Bayes kuralını, yani tıbbi teşhisi kullanmanın klasik bir örneğidir. Bu örnek ayrıca, temel oran yanlışlığı olarak adlandırılan belirsiz bilgilerle başa çıkmada ortak bir önyargı göstermektedir.
 
+
+
+(Teşhis öncesi populasyon)
+
 ![Bayes kuralını 1](https://course.elementsofai.com/static/3_2_bayes-rule-1.3d5328b2.svg)
+
+
+
+(Teşhis sonrası populasyon)
 
 ![Bayes-kural-2](https://course.elementsofai.com/static/3_2_bayes-rule-2.2508e993.svg)
 
-Meme kanseri için mamografik tarama düşünün. Sayıları sadeleştirmek adına telafi yüzdeleri kullanarak, her 100 kadından 5'inde meme kanseri olduğunu varsayalım. Bir kişinin meme kanseri varsa, o zaman mamografi testinin 100 üzerinden 80 kez bulacağını varsayalım. Meme kanseri olduğunu öne süren test çıktığında, sonucun pozitif olduğunu söyleriz, tabii ki olumlu bir şey olmasa da Bu, test edilen kişi için budur (bunu söylemenin teknik bir yolu, testin hassasiyetinin% 80 olmasıdır).
+Meme kanseri için mamografik tarama düşünün. Sayıları sadeleştirmek adına, uydurulmus yüzdeleri kullanarak, her 100 kadından 5'inde meme kanseri olduğunu varsayalım. Bir kişinin meme kanseri varsa, o zaman mamografi testinin 100 üzerinden 80 kez bulacağını varsayalım. Meme kanseri olduğunu öne süren test çıktığında, sonucun pozitif olduğunu söyleriz, tabii ki test edilen kişi için olumlu bir şey olmasa da bu (bunu söylemenin teknik bir yolu, testin hassasiyetinin% 80 olmasıdır).
 
-Test aynı zamanda diğer yönde de başarısız olabilir, yani hiçbiri olmadığında meme kanserini belirtmek için. Buna yanlış pozitif bulgu denir. Test edilen kişinin meme kanseri yoksa, testin yine de pozitif çıkma ihtimalinin 100'de 10 olduğunu varsayalım.
+Test aynı zamanda diğer yönde de başarısız olabilir, yani meme kanseri olmadığı halde, meme kanseri pozitif cıktı vermesi. Buna yanlış pozitif bulgu denir. Test edilen kişinin meme kanseri yoksa, testin yine de pozitif çıkma ihtimalinin 100'de 10 olduğunu varsayalım.
 
-Yukarıdaki olasılıklara dayanarak, olasılık oranını hesaplayabilirsiniz. Bir sonraki alıştırmada kullanım bulacaksınız. Olasılık oranının nasıl hesaplandığını unutursanız, bu bölümün başındaki terminoloji kutusunu kontrol edip yağmur örneğini tekrar ziyaret etmek isteyebilirsiniz.
+Yukarıdaki olasılıklara dayanarak, olasılık oranını hesaplayabilirsiniz. Bir sonraki alıştırmada kullanım bulacaksınız. Olasılık oranının nasıl hesaplandığını unutursanız, bu bölümün başındaki terminoloji kutusunu kontrol edip, yağmur örneğini tekrar ziyaret etmek isteyebilirsiniz.
 
 ### 
 
