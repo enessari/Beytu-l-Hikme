@@ -1,0 +1,138 @@
+## III .Arama ve oyunlar
+
+### Bu bölümde klasik bir AI problemi çalışacağız: oyunlar. Netlik uğruna odaklanacağımız en basit senaryo, tic-tac-toe ve satranç gibi iki oyunculu, mükemmel bilgilendirme oyunlarıdır.
+
+### Örnek: tic tac toe oynamak
+
+Maxine ve Minnie gerçek oyun meraklıları. Sadece oyunları severler. Özellikle tic-tac-toe veya satranç gibi iki kişilik, mükemmel bilgi oyunları. Bir gün Tic Tac Toe oynuyorlardı. Maxine ya da arkadaşları onu çağırdığı şekliyle Max, X olarak, Minnie ile oynuyordu, ya da arkadaşları onu çağırdığı şekliye Min, O olarak. Min henüz sırasını yeni oynamıştı ve son olarak tahta şu şekilde görünüyordu:
+
+![tic tac ayak](https://course.elementsofai.com/static/2_3-tic-tac-toe.77c7908c.svg)
+
+
+
+Max tahtaya bakıyordu ve sıradaki hamlesini düşünürken, aniden yüzünü umutsuzluğa gömdü, 1997'de Deep Blue'yu oynayan Garry Kasparov'a benziyordu.
+
+Evet, Min üst sırada üç Os almaya yakındı, ancak Max bu plana kolayca bir son verebilirdi. Öyleyse Max neden bu kadar karamsardı?
+
+### Oyun ağaçları
+
+AI kullanarak oyunları çözmek için bir oyun ağacı kavramını tanıtacağız. Oyunun farklı durumları, oyun planındaki düğümlerle temsil edilir ve yukarıdaki planlama problemlerine çok benzer. Fikir sadece biraz farklı. Oyun ağacında, düğümler oyunda her oyuncunun sırasına karşılık gelen seviyelerde düzenlenir, böylece ağacın “kök” düğümü (genellikle diyagramın üzerinde gösterilir) oyundaki başlangıç pozisyonudur. Tic Tac Toe'da, henüz X'lerin veya Os'ların oynanmadığı boş ızgara bu olacaktı. Kök altında, ikinci seviyede, ilk oyuncunun hamlelerinin X ya da O olması muhtemel durumları vardır. Bu düğümleri kök düğümünün “çocukları” olarak adlandırırız.
+
+İkinci seviyedeki her düğüm, çocukları, rakip oyuncunun hamleleri ile ondan erişilebilecek durumları düğümledikçe daha fazla olacaktır. Bu, oyunun bittiği durumlara ulaşana kadar seviye seviyesinde devam eder. Tic Tac Toe'da, bu, oyunculardan birinin üçlü bir çizgiyi kazandığı ve kazandığı ya da tahtanın dolu olduğu ve oyunun berabere bittiği anlamına gelir.
+
+### Değeri minimize etmek ve maksimize etmek
+
+Oyunu kazanmaya çalışan AI oyunu yaratabilmek için, olası her son sonuca sayısal bir değer ekliyoruz. X'in üç çizgisinin olduğu pano pozisyonlarına, böylece Max kazanır, +1 değerini ve benzer şekilde Min'in üst üste üç Os ile kazandığı pozisyonlara -1 değerini ekleriz. Tahtanın dolu olduğu ve hiçbir oyuncunun kazanamadığı pozisyonlar için, 0 nötr değerini kullanırız (bu değerin ne kadar uzun olduğu önemli değildir, böylece Max değeri maksimuma çıkarmaya çalışır ve Min de küçültmek için çalışır).
+
+### Örnek bir oyun ağacı
+
+Örneğin, kökünden değil, oyunun ortasında başlayan aşağıdaki oyun ağacını göz önünde bulundurun (aksi halde ağaç görüntülenemeyecek kadar büyük olur). Bunun, bu bölümün başındaki çizimde gösterilen oyundan farklı olduğunu unutmayın. Düğümleri 1, 2, ..., 14 numaralı numaralara ayırdık.
+
+Ağaç, tahtadaki boş yuvalardan herhangi birine X yerleştirmek için bir O yerleştirmek için Min'in sırasını veya Max'i açmak için değişen katmanlardan oluşur. Sırada oynaması gereken oyuncu solda gösterilir.
+
+![Oyun ağacı-1](https://course.elementsofai.com/static/2_3_game-tree-1.84178ba8.svg)
+
+Oyun, üstte (1) olarak numaralandırılan kök düğümünde gösterilen tahta pozisyonunda devam eder ve Min'in üç boş hücreden herhangi birine O yerleştirme sırası ile devam eder. Düğümler (2) - (4) sırasıyla üç seçeneğin her birinden elde edilen tahta pozisyonlarını göstermektedir. Bir sonraki adımda, her düğümde her biri Max'in X oynaması için iki seçenek vardır ve bu nedenle ağaç yeniden dallanır.
+
+Yukarıdaki başlangıç pozisyonundan başladığında, oyun her zaman üçlü bir sıra ile biter: (7) ve (9) nodlarında X ile oynayan Max kazanır ve O ile oynayan Min (11) - (14) nodlarında kazanan kazanır. 
+
+Oyuncuların sıraları değiştiğinden, seviyelerin kimin sırası olduğunu belirten Min seviyeleri ve Maksimum seviyeleri olarak etiketlenebileceğini unutmayın.
+
+### Stratejik olmak
+
+Alttan ikinci seviyedeki düğümleri (5) - (10) göz önünde bulundurun. (7) ve (9) düğümlerinde oyun sona erer ve Max arka arkaya üç X ile kazanır. Bu pozisyonların değeri +1'dir. Kalan düğümlerde, (5), (6), (8) ve (10) 'da, oyun da pratikte sona ermiştir, çünkü Min, sadece O'yu kazanmak için kalan tek hücreye yerleştirmesi gerekir. Başka bir deyişle, oyunun alttan ikinci seviyedeki her bir düğümde nasıl biteceğini biliyoruz. Bu nedenle (5), (6), (8) ve (10) düğümlerinin değerinin de –1 olduğuna karar verebiliriz.
+
+![Oyun ağacı-2](https://course.elementsofai.com/static/2_3_game-tree-2.0259fe81.svg)
+
+İşte ilginç kısım. Düğümlerin değerlerini kök seviyesine göre bir seviye daha yüksek olarak kabul edelim: düğümler (2) - (4). Her iki (2) çocuğun, yani düğümlerin (5) ve (6) çocuklarının Min'in zaferine yol açtığını gözlemlediğimizden, tereddüt etmeden -1 değerini düğümün (2) de ekleyebiliriz. Bununla birlikte, düğüm (3) için sol çocuk (7), Max'in +1 zaferine, sağ çocuk (8), Min kazanma -1'e yol açar. Düğümün değeri (3) nedir? Düğümde seçim yapan kişiyi (3) akılda tutarak, bir süre düşünün.
+
+Max'in oyun sırası geldiğinden, elbette sol çocuğu, nodu (7) seçecek. Böylelikle, düğüm düğümündeki (3) pozisyona her ulaştığımızda, Max zafer kazanabilir ve +1 değerini düğüme (3) ekleyebiliriz.
+
+Aynı şey, düğüm (4) için de geçerlidir: yine, Max, X'in nereye koyacağını seçebileceğinden, her zaman zafer kazanabileceğini ve +1 değerini düğüme (4) ekleriz.
+
+![Oyun ağacı-3](https://course.elementsofai.com/static/2_3_game-tree-3.05047154.svg)
+
+### Kimin kazanacağının belirlenmesi
+
+Bu bölümdeki en önemli ders, oyunun sonucunu herhangi bir tahtanın pozisyonundan önceden belirlemek için yukarıdaki tipteki akıl yürütmeyi tekrar tekrar uygulamaktır.
+
+Şimdiye kadar, düğümün (2) değerinin –1 olduğuna karar verdik, bu da böyle bir yönetim kurulu konumunda kalırsak, Min'in kazanmayı sağlayabildiği ve bunun tersinin düğümler (3) ve (4) için geçerli olduğu anlamına gelir. : değerleri +1'dir, bu da Max'in yalnızca akıllıca kendi sırasını oynarsa kazanacağından emin olabileceği anlamına gelir.
+
+Sonunda, Min'in deneyimli bir oyuncu olduğu için aynı sonuca varabildiğini ve bu yüzden sadece tek bir seçeneğinin olduğunu söyleyebiliriz: O, yönetim kurulu ortasında O oynar.
+
+Aşağıdaki şemada, her bir düğümün değerini ve ayrıca Kök düğümde Min'in başında başlayan optimal oyun oynamayı dahil ettik.
+
+![Oyun ağacı-4](https://course.elementsofai.com/static/2_3_game-tree-4.d2c016a0.svg)
+
+### Kök düğümün değeri = kim kazanır
+
+Oyunun değeri olduğu söylenen kök düğümünün değeri bize kimin kazanacağını (ve sonuç sadece düz kazanmak veya kaybetmek değilse ne kadar olduğunu) söyler: Oyunun değeri +1 ise Max kazanır , Min, değer –1 ise ve değer 0 ise, oyun berabere biter. Diğer oyunlarda, değer başka değerlere de sahip olabilir (örneğin, pokerde önünüzdeki fişlerin parasal değeri gibi).
+
+Bu, her iki oyuncunun da kendileri için en iyisini seçtiği ve birincisi için en iyisinin diğerine en kötüsü olduğu (“sıfır toplamlı oyun”) olduğu varsayımına dayanmaktadır.
+
+> Not
+>
+> ## Optimal hareketleri bulmak
+>
+> Oyun ağacındaki tüm düğümlerin değerlerini belirledikten sonra, optimum hareketler çıkarılabilir: herhangi bir Min düğümünde (Min'in sırası olduğu yerde), optimal seçim, değeri minimum ve tam tersi olan alt düğüm tarafından verilir. Herhangi bir Max düğümü (Max'ın sırası olduğu yerde), optimum seçim değeri maksimum olan alt düğüm tarafından verilir. Bazen, eşit derecede iyi olan pek çok eşit sayıda iyi seçenek vardır ve sonuç, hangisini seçerse seçsin aynı olacaktır.
+
+### Minimax algoritması
+
+Minimax algoritması denilen bir algoritma elde etmek için oyunun değeri hakkındaki yukarıdaki kavramdan faydalanabiliriz. Herhangi bir belirleyici, iki kişilik, mükemmel bilgi sıfır toplamlı oyunda, teorik olarak konuşursak, optimal oyun oynamayı garanti eder. Oyunun durumu göz önüne alındığında, algoritma, verilen durumdaki çocukların değerlerini basitçe hesaplar ve Maks. Sırasındaki maksimum değere sahip olanı ve Min'in sırasındaki minimum değere sahip olanı seçer.
+
+Algoritma birkaç kod satırı kullanılarak gerçekleştirilebilir. Ancak, ana fikri kavradığımızdan memnun olacağız. Gerçek algoritmaya bakmak istiyorsanız (alarm: gerekli programlama), örneğin [Wikipedia: Minimax'a](https://en.wikipedia.org/wiki/Minimax) göz atın .
+
+![satranç](data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgNjc0IDQxMi44Ij4KICAgIDxzdHlsZT4KICAgICAgICAuc3Qwe29wYWNpdHk6LjI1O2ZpbGw6IzA2MDYzNX0uc3Qxe2ZpbGw6I2ZjZmJmOH0uc3Qye2ZpbGw6IzIyMjA0OX0uc3Qze2ZpbGw6IzFiMWEzZX0uc3Q0e2ZpbGw6I2ZkNzM1N30uc3Q1e2ZpbGw6IzhhOGVkOH0uc3Q2e29wYWNpdHk6LjE1O2ZpbGw6IzA2MDYzNX0uc3Q3e2ZpbGw6I2ZkYjFiMX0uc3Q4e29wYWNpdHk6LjE1fS5zdDl7ZmlsbDojMDYwNjM1fS5zdDEwe2ZpbGw6IzJhMmE1Yn0uc3QxMXtmaWxsOiNkMTZmZDF9LnN0MTJ7b3BhY2l0eTouNDAyO2ZpbGw6I2ZjZmJmODtlbmFibGUtYmFja2dyb3VuZDpuZXd9CiAgICA8L3N0eWxlPgogICAgPHRpdGxlPgogICAgICAgIDJfMy1jaGVzcwogICAgPC90aXRsZT4KICAgIDxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0xODggMzM4LjloMTcuNmMuOCAwIDEuNS0uNyAxLjUtMS41VjcyLjZjMC0uOC0uNy0xLjUtMS41LTEuNUgxODhjLS44IDAtMS41LjctMS41IDEuNXYyNjQuOGMwIC45LjcgMS41IDEuNSAxLjV6Ii8+CiAgICA8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMTk4LjEgMzEyLjRoMzYuMnYtMzYuMmgtMzYuMnYzNi4yem0wLTcyLjNoMzYuMnYtMzYuMmgtMzYuMnYzNi4yem0wLTcyLjRoMzYuMnYtMzYuMmgtMzYuMnYzNi4yem0wLTcyLjRoMzYuMlY1OS4yaC0zNi4ydjM2LjF6bTM2LjIgMjUzLjNoMzYuMnYtMzYuMmgtMzYuMnYzNi4yem0wLTcyLjRoMzYuMlYyNDBoLTM2LjJ2MzYuMnptMC03Mi4zaDM2LjJ2LTM2LjJoLTM2LjJ2MzYuMnptMC03Mi40aDM2LjJWOTUuM2gtMzYuMnYzNi4yek0yNzAuNSAzMTIuNGgzNi4ydi0zNi4yaC0zNi4ydjM2LjJ6bTAtNzIuM2gzNi4ydi0zNi4yaC0zNi4ydjM2LjJ6bTAtNzIuNGgzNi4ydi0zNi4yaC0zNi4ydjM2LjJ6bTAtNzIuNGgzNi4yVjU5LjJoLTM2LjJ2MzYuMXptMzYuMiAyNTMuM2gzNi4ydi0zNi4yaC0zNi4ydjM2LjJ6TTMwNi43IDI3Ni4yaDM2LjJWMjQwaC0zNi4ydjM2LjJ6bTAtNzIuM2gzNi4ydi0zNi4yaC0zNi4ydjM2LjJ6bTAtNzIuNGgzNi4yVjk1LjNoLTM2LjJ2MzYuMnptMzYuMiAxODAuOUgzNzl2LTM2LjJoLTM2LjJ2MzYuMnptMC03Mi4zSDM3OXYtMzYuMmgtMzYuMnYzNi4yem0wLTcyLjRIMzc5di0zNi4yaC0zNi4ydjM2LjJ6bTAtNzIuNEgzNzlWNTkuMmgtMzYuMnYzNi4xek0zNzkgMzQ4LjZoMzYuMnYtMzYuMkgzNzl2MzYuMnptMC03Mi40aDM2LjJWMjQwSDM3OXYzNi4yem0wLTcyLjNoMzYuMnYtMzYuMkgzNzl2MzYuMnpNMzc5IDEzMS41aDM2LjJWOTUuM0gzNzl2MzYuMnptMzYuMiAxODAuOWgzNi4ydi0zNi4yaC0zNi4ydjM2LjJ6bTAtNzIuM2gzNi4ydi0zNi4yaC0zNi4ydjM2LjJ6bTAtNzIuNGgzNi4ydi0zNi4yaC0zNi4ydjM2LjJ6TTQxNS4yIDk1LjNoMzYuMlY1OS4yaC0zNi4ydjM2LjF6bTM2LjIgMjUzLjNoMzYuMnYtMzYuMmgtMzYuMnYzNi4yem0wLTcyLjRoMzYuMlYyNDBoLTM2LjJ2MzYuMnptMC03Mi4zaDM2LjJ2LTM2LjJoLTM2LjJ2MzYuMnptMC03Mi40aDM2LjJWOTUuM2gtMzYuMnYzNi4yeiIvPgogICAgPHBhdGggY2xhc3M9InN0MiIgZD0iTTE5OC4xIDM0OC42aDM2LjJ2LTM2LjJoLTM2LjJ2MzYuMnptMC03Mi40aDM2LjJWMjQwaC0zNi4ydjM2LjJ6bTAtNzIuM2gzNi4ydi0zNi4yaC0zNi4ydjM2LjJ6bTAtNzIuNGgzNi4yVjk1LjNoLTM2LjJ2MzYuMnptMzYuMiAxODAuOWgzNi4ydi0zNi4yaC0zNi4ydjM2LjJ6bTAtNzIuM2gzNi4ydi0zNi4yaC0zNi4ydjM2LjJ6bTAtNzIuNGgzNi4ydi0zNi4yaC0zNi4ydjM2LjJ6bTAtNzIuNGgzNi4yVjU5LjJoLTM2LjJ2MzYuMXptMzYuMiAyNTMuM2gzNi4ydi0zNi4yaC0zNi4ydjM2LjJ6TTI3MC41IDI3Ni4yaDM2LjJWMjQwaC0zNi4ydjM2LjJ6bTAtNzIuM2gzNi4ydi0zNi4yaC0zNi4ydjM2LjJ6bTAtNzIuNGgzNi4yVjk1LjNoLTM2LjJ2MzYuMnpNMzA2LjcgMzEyLjRoMzYuMnYtMzYuMmgtMzYuMnYzNi4yem0wLTcyLjNoMzYuMnYtMzYuMmgtMzYuMnYzNi4yem0wLTcyLjRoMzYuMnYtMzYuMmgtMzYuMnYzNi4yem0wLTcyLjRoMzYuMlY1OS4yaC0zNi4ydjM2LjF6bTM2LjIgMjUzLjNIMzc5di0zNi4yaC0zNi4ydjM2LjJ6bTAtNzIuNEgzNzlWMjQwaC0zNi4ydjM2LjJ6bTAtNzIuM0gzNzl2LTM2LjJoLTM2LjJ2MzYuMnptMC03Mi40SDM3OVY5NS4zaC0zNi4ydjM2LjJ6TTM3OSAzMTIuNGgzNi4ydi0zNi4ySDM3OXYzNi4yem0wLTcyLjNoMzYuMnYtMzYuMkgzNzl2MzYuMnptMC03Mi40aDM2LjJ2LTM2LjJIMzc5djM2LjJ6bTAtNzIuNGgzNi4yVjU5LjJIMzc5djM2LjF6bTM2LjIgMjUzLjNoMzYuMnYtMzYuMmgtMzYuMnYzNi4yem0wLTcyLjRoMzYuMlYyNDBoLTM2LjJ2MzYuMnptMC03Mi4zaDM2LjJ2LTM2LjJoLTM2LjJ2MzYuMnptMC03Mi40aDM2LjJWOTUuM2gtMzYuMnYzNi4yem0zNi4yIDE4MC45aDM2LjJ2LTM2LjJoLTM2LjJ2MzYuMnptMC03Mi4zaDM2LjJ2LTM2LjJoLTM2LjJ2MzYuMnptMC03Mi40aDM2LjJ2LTM2LjJoLTM2LjJ2MzYuMnptMC03Mi40aDM2LjJWNTkuMmgtMzYuMnYzNi4xeiIvPgogICAgPHBhdGggY2xhc3M9InN0MCIgZD0iTTMzMS44IDI5MC45aDk4YzIuOCAwIDUgMi4yIDUgNXYxLjVjMCAyLjgtMi4yIDUtNSA1aC05OGMtMi44IDAtNS0yLjItNS01di0xLjVjMC0yLjcgMi4zLTUgNS01ek00MzMgMjIyLjRoMzkuNGMyLjggMCA1IDIuMiA1IDV2MS41YzAgMi44LTIuMiA1LTUgNUg0MzNjLTIuOCAwLTUtMi4yLTUtNXYtMS41YzAtMi43IDIuMy01IDUtNXpNMzI0LjggMjE4LjRoMzkuNGMyLjggMCA1IDIuMiA1IDV2MS41YzAgMi44LTIuMiA1LTUgNWgtMzkuNGMtMi44IDAtNS0yLjItNS01di0xLjVjMC0yLjcgMi4yLTUgNS01ek0zNjEuMSAxODAuNGgzOS40YzIuOCAwIDUgMi4yIDUgNXYxLjVjMCAyLjgtMi4yIDUtNSA1aC0zOS40Yy0yLjggMC01LTIuMi01LTV2LTEuNWMwLTIuOCAyLjMtNSA1LTV6TTI1Mi44IDIxOS40aDM5LjRjMi44IDAgNSAyLjIgNSA1djEuNWMwIDIuOC0yLjIgNS01IDVoLTM5LjRjLTIuOCAwLTUtMi4yLTUtNXYtMS41YzAtMi43IDIuMy01IDUtNXpNMjE0LjYgMTUyLjJIMjU0YzIuOCAwIDUgMi4yIDUgNXYxLjVjMCAyLjgtMi4yIDUtNSA1aC0zOS40Yy0yLjggMC01LTIuMi01LTV2LTEuNWMwLTIuOCAyLjItNSA1LTV6TTI1My40IDI1NC45aDM5LjRjMi44IDAgNSAyLjIgNSA1djEuNWMwIDIuOC0yLjIgNS01IDVoLTM5LjRjLTIuOCAwLTUtMi4yLTUtNXYtMS41YzAtMi43IDIuMi01IDUtNXoiLz4KICAgIDxwYXRoIGNsYXNzPSJzdDMiIGQ9Ik0yMzQuMyAxNzcuOGgtMTcuNmMtMy45IDAtNyAzLjEtNyA3czMuMSA3IDcgN2gxNy42di0xNCIvPgogICAgPHBhdGggY2xhc3M9InN0NCIgZD0iTTQzOS40IDI3Mi45YzAtMyAuNy01LjkgMi4zLTguNCAxLTEuNiAxLjUtMy42IDEuMS01LjctLjYtMy4yLTMuMS01LjctNi4zLTYuMy01LjEtMS05LjYgMi45LTkuNiA3LjkgMCAxLjUuNCAzIDEuMiA0LjIgMS42IDIuNSAyLjMgNS41IDIuMyA4LjUgMCAyLjgtLjcgNS42LTIuMSA4LjFsLTYuOCAxMi4yYy0yIDMuNi4yIDguMSA0LjMgOC42IDYuMS44IDEyLjIuOCAxOC4zIDAgNC4xLS41IDYuMy01IDQuMy04LjZsLTYuOC0xMi4yYy0xLjUtMi43LTIuMi01LjUtMi4yLTguM20tNzEuOSAwYzAtMyAuNy01LjkgMi4zLTguNCAxLTEuNiAxLjUtMy42IDEuMS01LjctLjYtMy4yLTMuMS01LjctNi4zLTYuMy01LjEtMS05LjYgMi45LTkuNiA3LjkgMCAxLjUuNCAzIDEuMiA0LjIgMS42IDIuNSAyLjMgNS41IDIuMyA4LjUgMCAyLjgtLjcgNS42LTIuMSA4LjFsLTYuOCAxMi4yYy0yIDMuNi4yIDguMSA0LjMgOC42IDYuMS44IDEyLjIuOCAxOC4zIDAgNC4xLS41IDYuMy01IDQuMy04LjZsLTYuOC0xMi4yYy0xLjUtMi43LTIuMi01LjUtMi4yLTguMyIvPgogICAgPHBhdGggY2xhc3M9InN0NSIgZD0iTTI1Ni45IDEzNC4xYzAtMyAuNy01LjkgMi4zLTguNCAxLTEuNiAxLjUtMy42IDEuMS01LjctLjYtMy4yLTMuMS01LjctNi4zLTYuMy01LjEtMS05LjYgMi45LTkuNiA3LjkgMCAxLjUuNCAzIDEuMiA0LjIgMS42IDIuNSAyLjMgNS41IDIuMyA4LjUgMCAyLjgtLjcgNS42LTIuMSA4LjFsLTYuOCAxMi4yYy0yIDMuNi4yIDguMSA0LjMgOC42IDYuMS44IDEyLjIuOCAxOC4zIDAgNC4xLS41IDYuMy01IDQuMy04LjZsLTYuOC0xMi4yYy0xLjUtMi43LTIuMi01LjUtMi4yLTguM20xMDguNiA2Ni4zYzAtMyAuNy01LjkgMi4zLTguNCAxLTEuNiAxLjUtMy42IDEuMS01LjctLjYtMy4yLTMuMS01LjctNi4zLTYuMy01LjEtMS05LjYgMi45LTkuNiA3LjkgMCAxLjUuNCAzIDEuMiA0LjIgMS42IDIuNSAyLjMgNS41IDIuMyA4LjUgMCAyLjgtLjcgNS42LTIuMSA4LjFsLTYuOCAxMi4yYy0yIDMuNi4yIDguMSA0LjMgOC42IDYuMS44IDEyLjIuOCAxOC4zIDAgNC4xLS41IDYuMy01IDQuMy04LjZsLTYuOC0xMi4yYy0xLjUtMi43LTIuMi01LjQtMi4yLTguM20tMTQ2LjQtMzguMWMwLTMgLjctNS45IDIuMy04LjQgMS0xLjYgMS41LTMuNiAxLjEtNS43LS42LTMuMi0zLjEtNS43LTYuMy02LjMtNS4xLTEtOS42IDIuOS05LjYgNy45IDAgMS41LjQgMyAxLjIgNC4yIDEuNiAyLjUgMi4zIDUuNSAyLjMgOC41IDAgMi44LS43IDUuNi0yLjEgOC4xbC02LjggMTIuMmMtMiAzLjYuMiA4LjEgNC4zIDguNiA2LjEuOCAxMi4yLjggMTguMyAwIDQuMS0uNSA2LjMtNSA0LjMtOC42bC02LjgtMTIuMmMtMS41LTIuNy0yLjItNS41LTIuMi04LjMiLz4KICAgIDxwYXRoIGNsYXNzPSJzdDQiIGQ9Ik00ODQuMSAyMjEuN2wtNy40LTE2LjJjLTEuNS0zLjMtMi4zLTctMi4zLTEwLjggMC0xLjIuMS0yLjMuMi0zLjRzMS0xLjkgMi4xLTEuOWMxLjMgMCAyLjUtLjkgMi42LTIuMi4xLTEuNS0xLTIuNy0yLjUtMi43aC0uNGMuMS0uMy4zLS42LjQtLjkgMS4xLTIuMiAxLjYtNC44IDEuMi03LjYtLjUtMy0yLjUtNy4zLTUuMi05LjQtLjQtLjMtLjUtLjktLjMtMS40LjQtLjcuNS0xLjUuMy0yLjMtLjMtMS40LTEuNC0yLjQtMi44LTIuNy0yLjItLjQtNC4xIDEuMy00LjEgMy40IDAgLjUuMyAxIC41IDEuNC4yLjUuMSAxLjEtLjQgMS40LTMuMSAyLTUuNCA2LjYtNS40IDExLjYgMCAyIC41IDMuOSAxLjMgNS41LjIuMy4zLjcuNSAxaC0uM2MtMS4zIDAtMi41LjktMi42IDIuMi0uMSAxLjUgMSAyLjcgMi41IDIuN2guMWMxLjEgMCAyIC44IDIuMSAxLjkuMSAxLjEuMiAyLjMuMiAzLjUgMCAzLjgtLjggNy41LTIuMyAxMC44bC03LjQgMTYuMmMtMi4yIDQuOC4zIDEwLjcgNC43IDExLjUgNi42IDEuMSAxMy4zIDEuMSAxOS45IDAgNC42LS45IDctNi45IDQuOC0xMS42bS0xNzguMi0yNi40bC45LTIuOWMuMy0xLjIuMS0yLjQtLjYtMy40LTIuNi0zLjctOC45LTEyLjMtMTEuMi0xMy0yLjMtLjctMi44LTEuMy0zLjYtMS45bC0xLjgtMS4yYy0uNS0uMy0xLjEtLjEtMS4zLjVsLS41IDEuOWMtLjQgMS4zLTEuMiAyLjQtMi4yIDMuMi0yLjkgMi4yLTguNyA3LjgtNy41IDE2LjguNCAyLjkgMy4yIDcuNyAzLjUgOS4yIDEuNSA3LjMtMi40IDEyLjEtNi41IDE4LjMtMi4xIDMuMy4zIDcuNCA0LjYgNy45IDYuNS43IDEzIC43IDE5LjUgMCA0LjMtLjUgNi43LTQuNiA0LjYtNy45bC02LjctOS4xYy0xLjUtMi4zLTIuNi01LjEtMi42LTcuNyAwLTIgLjItNiAxLjEtNy44LjUtMS4xIDEuOC0xLjYgMi45LTEuMWwyIC44YzIuMy45IDQuOC0uMyA1LjQtMi42Ii8+CiAgICA8cGF0aCBjbGFzcz0ic3Q1IiBkPSJNMzAzLjIgMjU0LjZsLTcuNC0xNi4yYy0xLjUtMy4zLTIuMy03LTIuMy0xMC44IDAtMS4yLjEtMi4zLjItMy40czEtMS45IDIuMS0xLjljMS4zIDAgMi41LS45IDIuNi0yLjIuMS0xLjUtMS0yLjctMi41LTIuN2gtLjRjLjEtLjMuMy0uNi40LS45IDEuMS0yLjIgMS42LTQuOCAxLjItNy42LS41LTMtMi41LTcuMy01LjItOS40LS40LS4zLS41LS45LS4zLTEuNC40LS43LjUtMS41LjMtMi4zLS4zLTEuNC0xLjQtMi41LTIuOC0yLjctMi4yLS40LTQuMSAxLjMtNC4xIDMuNCAwIC41LjMgMSAuNSAxLjQuMi41LjEgMS4xLS40IDEuNC0zLjEgMi01LjQgNi42LTUuNCAxMS42IDAgMiAuNSAzLjkgMS4zIDUuNS4yLjMuMy43LjUgMWgtLjNjLTEuMyAwLTIuNS45LTIuNiAyLjItLjEgMS41IDEgMi43IDIuNSAyLjdoLjFjMS4xIDAgMiAuOCAyLjEgMS45LjEgMS4xLjIgMi4zLjIgMy41IDAgMy44LS44IDcuNS0yLjMgMTAuOGwtNy40IDE2LjJjLTIuMiA0LjguMyAxMC43IDQuNyAxMS41IDYuNiAxLjEgMTMuMyAxLjEgMTkuOSAwIDQuNS0uOSA3LTYuOSA0LjgtMTEuNm0xMTEuMS03NS44bC03LjktMTcuMmMtMS42LTMuNS0yLjQtNy40LTIuNC0xMS40IDAtMS4yLjEtMi41LjItMy43LjEtMS4xIDEuMS0yIDIuMi0yIDEuNCAwIDIuNi0xIDIuOC0yLjMuMi0xLjYtMS4xLTIuOS0yLjYtMi45aC0uNHMtMS0zLjEtLjktMy40YzEuMi0yLjMgNC41LTcuOCA0LjEtMTAuOC0uNC0zLjMtNS45LTQuNi03LjQtNC45IDEuMi0xIDItMi40IDItNC4xIDAtMi4yLTEuNC0zLjItMy4zLTMuNnYtLjRjMC0xLjEtLjktMi4xLTIuMS0yLjEtMS4xIDAtMi4xLjktMi4xIDIuMXYuNGMtMS45LjQtMy4zIDEuNC0zLjMgMy42IDAgMS42LjggMy4xIDEuOSA0LjEtLjUuMS03LjcgMS4xLTcuMiA1LjcuMiAyLjEgMy40IDguNCA0LjIgMTAuMS4yLjQtMS4xIDMuNC0xLjEgMy40aC0uM2MtMS40IDAtMi42IDEtMi44IDIuMy0uMiAxLjYgMS4xIDIuOSAyLjYgMi45aC4xYzEuMSAwIDIuMS44IDIuMiAyIC4yIDEuMi4yIDIuNC4yIDMuNyAwIDQtLjggNy45LTIuNCAxMS40bC03LjkgMTcuMmMtMi4zIDUuMS4zIDExLjQgNSAxMi4yIDcgMS4xIDE0LjEgMS4xIDIxLjEgMCA1LjMtLjkgNy45LTcuMiA1LjUtMTIuMyIvPgogICAgPHBhdGggY2xhc3M9InN0NCIgZD0iTTI2OCAyOTQuM2wtNy45LTE3LjJjLTEuNi0zLjUtMi40LTcuNC0yLjQtMTEuNCAwLTEuMi4xLTIuNS4yLTMuNy4xLTEuMSAxLjEtMiAyLjMtMiAxLjQgMCAyLjYtMSAyLjgtMi4zLjItMS42LTEuMS0yLjktMi42LTIuOWgtLjRzLTEtMy4xLS45LTMuNGMxLjItMi4zIDQuNS03LjggNC4xLTEwLjgtLjQtMy4zLTUuOS00LjYtNy40LTQuOSAxLjItMSAyLTIuNCAyLTQuMSAwLTIuMi0xLjQtMy4yLTMuMy0zLjZ2LS40YzAtMS4xLS45LTIuMS0yLjEtMi4xLTEuMSAwLTIuMS45LTIuMSAyLjF2LjRjLTEuOS40LTMuMyAxLjQtMy4zIDMuNiAwIDEuNi44IDMuMSAxLjkgNC4xLS41LjEtNy43IDEuMS03LjIgNS43LjIgMi4xIDMuNCA4LjQgNC4yIDEwLjEuMi40LTEuMSAzLjQtMS4xIDMuNGgtLjNjLTEuNCAwLTIuNiAxLTIuOCAyLjMtLjIgMS42IDEuMSAyLjkgMi42IDIuOWguMWMxLjEgMCAyLjEuOCAyLjIgMiAuMiAxLjIuMiAyLjQuMiAzLjcgMCA0LS44IDgtMi40IDExLjRsLTcuOSAxNy4yYy0yLjMgNS4xLjMgMTEuNCA1IDEyLjIgNyAxLjEgMTQuMSAxLjEgMjEuMSAwIDUuMS0uOSA3LjctNy4yIDUuNC0xMi4zIi8+CiAgICA8cGF0aCBjbGFzcz0ic3Q2IiBkPSJNMjU0LjggMjcxLjFjLS4xLTEtLjEtMS45LS4yLTIuOS0uNS4yLTEuMS4zLTEuOC4zLTEuOSAwLTMuOC0uMS01LjgtLjMtLjIgMS44LS41IDMuNi0xIDUuNCAzLS4yIDYuMS0uNiA5LjEtLjktLjItLjUtLjMtMS0uMy0xLjZ6Ii8+CiAgICA8cGF0aCBjbGFzcz0ic3Q3IiBkPSJNMTY3LjEgMzIyLjJjNC45LTEwLjMgOC40LTIxLjIgMTAuNS0zMi40IDEuOS0xMC4yIDMuNi0yMyAzLjItMzQuNC0uNy0yNCAxMy45LTQ1LjkgMjEtNTQuOSA3LTkgMTEuNy02LjkgMTMuOS0zLjIgMi4yIDMuNy01LjMgMTguNS01LjMgMTguNXMzLjItMS40IDktM2MyLjYtLjcgNi41LS4zIDkuMS0uMyA0LjUgMCA2LjUgMiA4LjEgMy4yIDQuNSAzLjMgMy42IDExLjUtNy42IDExLjYtMTEuMiAwLTIwLjcgNS40LTIzLjMgMTMgMCAwIDQtMS40IDIwLTYuOHMzMS43IDEzLjIgMjcuNiAyMi4xYy00LjEgOC44LTExLjktMTAuNC0yNS45LTMuMS0xNCA3LjQtMTYgMTMuNS0xNi41IDI2LjYtLjUgMTMuMSA3LjUgMTQuMiAxNi40IDExLjEgOC45LTMuMSAxNS41LTEzLjcgMTguNC0xOCAyLjgtNC4zIDE0LjctOC44IDEyLjggNC4yLTEuOSAxMy0xMi4xIDM1LjEtMTkuMiAzNy4zbC0yLjIgMS42Yy0xMS4zIDgtMjMgMTguOS0yNy4yIDMyLjFsLTQuOCAxNC41LTM5LjctMzcuNCAxLjctMi4zeiIvPgogICAgPGcgY2xhc3M9InN0OCI+CiAgICAgICAgPHBhdGggY2xhc3M9InN0OSIgZD0iTTI0MS44IDIzN2MtNC4xIDEuNi0xLjIgOC0uNCAxMC41LjYgMiAuOCAzLjkuNiA1LjcgNS4zIDMuMSA4LjggNy4zIDExLjIgMi4yIDIuNS01LjMtMi4zLTE0LjItOS45LTE5LjItLjUuNC0xIC42LTEuNS44eiIvPgogICAgPC9nPgogICAgPGcgY2xhc3M9InN0OCI+CiAgICAgICAgPHBhdGggY2xhc3M9InN0MTAiIGQ9Ik0yMDkuMSAyMTYuM2MtLjYuMiAxLjItLjcgMS4yLS43czIuNS00LjkgNC4yLTkuN2MtLjIuMS0uMy4xLS41LjItNC41IDEuNy04LjkgNC43LTExLjkgOC40LTQuNSA1LjUtNy4yIDEyLjYtOC42IDE5LjggMS4xLTEuOSAyLjItMy44IDMuNC01LjYgMi45LTYgNi05LjUgMTIuMi0xMi40ek0yMDUuNiAyNDAuMmMyLjctNy42IDEyLjEtMTMgMjMuMy0xMyAyLjcgMCA0LjgtLjUgNi40LTEuMy0xLjctLjUtMy41LTEtNS4zLTEuMS0zLjUtLjMtNy0uMy0xMC40LjQtMy4xLjgtNS42IDIuMS03LjggMy45LTIuOSAyLjMtNC45IDUuNS01LjkgOS4xbC0uMy45Yy0uMS40LS4yLjctLjMgMS4xIi8+CiAgICA8L2c+CiAgICA8cGF0aCBjbGFzcz0ic3Q0IiBkPSJNMjYwLjggMjU4LjljMS40IDAgMi43LTEgMi44LTIuNC4yLTEuNi0xLjEtMi45LTIuNy0yLjloLS41cy0xLjEtMy4xLS45LTMuNGMxLjItMi4zIDQuNi03LjggNC4zLTEwLjgtLjQtMy4zLTYuMS00LjctNy42LTUgMS4zLTEgMi4xLTIuNSAyLjEtNC4yIDAtMi4yLTEuNC0zLjItMy40LTMuNnYtLjRjMC0xLjEtMS0yLjEtMi4xLTIuMXMtMi4xLjktMi4xIDIuMXYuNGMtMiAuNC0zLjQgMS40LTMuNCAzLjYgMCAxLjcuOCAzLjEgMiA0LjEtLjUuMS03LjkgMS4xLTcuNCA1LjguMiAyLjIgMy41IDguNCA0LjQgMTAuMS4yLjQtMS4xIDMuNC0xLjEgMy40aC0uM2MtMS40IDAtMi43IDEtMi44IDIuNC0uMiAxLjYgMS4xIDIuOSAyLjcgMi45aC4xbTIuNiA1LjciLz4KICAgIDxwYXRoIGNsYXNzPSJzdDExIiBkPSJNNjcuMyA0MTIuOGgxMzEuOWwuMi0uNmMzLjQtMTIuMiA3LjMtMjQuMyAxMS45LTM2LjIgMi4zLTUuOSA0LjktMTAuNyAyLjktMTIuNGwtNDUuMy00Mi4yYy0xLjYtMS41LTQuMS0xLjMtNS40LjRsLTQuNSA1LjdjLTI2LjEgMzIuOC01Ni45IDYxLjUtOTEuNyA4NS4zeiIvPgogICAgPHBhdGggY2xhc3M9InN0MTIiIGQ9Ik0yNTUuNyAyNzEuM2MtMi4xLS43LTQuNC40LTUuMiAyLjVsLTIuNiA3LjFjLS4xLjMgMCAuNi4zLjhsMi4zIDEuMmMxLjMuNyAyLjcgMS4yIDQuMiAxLjRsMS42LjNoLjFjLjktMyAxLjYtNS44IDItOC40LjEtLjguMi0xLjYuMi0yLjMtLjYtMS4yLTEuNi0yLjItMi45LTIuNnpNMjMxLjcgMjE3LjhjLjUuMyAyLjEgMS4zIDQuOSAzIC44LjUgMS44LjIgMi4yLS41LjEtLjEuMS0uMy4yLS40LS4xLTEuMy0uNy0yLjUtMS42LTMuNWwtLjMtLjNjLS4yLS4yLS40LS40LS42LS41LS44LS42LTEuOC0xLjUtMy4zLTIuMi0uNC0uMi0uOC0uMy0xLjQtLjUtLjMtLjEtMS0uMi0xLjktLjRoLS40Yy0uMiAwLS40LjEtLjUuMmwtMS4xIDEuNmMtLjIuMy0uMS43LjIuOSAxLjkgMS40IDMuMSAyLjIgMy42IDIuNnoiLz4KPC9zdmc+Cg==)
+
+
+
+### Kulağa hoş geliyor, şimdi eve gidebilir miyim?
+
+Yukarıda belirtildiği gibi, Minimax algoritması herhangi bir deterministik, iki oyunculu, mükemmel bilgi sıfır toplamlı oyunda en iyi oyunu oynamak için kullanılabilir. Bu tür oyunlar arasında tic-tac-toe, dördüncü, satranç, Go, vb. Birleşme vardır. Taş-kağıt-makas, diğer oyuncudan gizlenmiş bilgileri içerdiğinden, bu oyun sınıfında değildir; ne de determinist olmayan tekel veya tavla da değil. Bu konuyla ilgili olarak, tüm millet, şimdi eve gidebilir miyiz? Cevap, teoride evet, fakat pratikte hayır.
+
+> Not
+>
+> ## Masif oyun ağaçları sorunu
+>
+> Pek çok oyunda, oyun ağacı tam olarak geçemeyecek kadar büyüktür. Örneğin, satrançta ortalama dallanma faktörü, yani, düğüm başına ortalama çocuk sayısı (mevcut hamle) yaklaşık 35'tir. Bu, mümkün olan tüm senaryoları sadece iki hamleye kadar keşfetmek için yaklaşık 35 x'i ziyaret etmemiz gerektiği anlamına gelir. 35 = 1225 düğüm - muhtemelen en sevdiğiniz kalem ve kağıt ödev alıştırmanız değil. Üç hareketin önden görünüşü, 42875 düğümü ziyaret etmeyi gerektirir; dört hareket 1500625; ve on hamle 2758547353515625 (yaklaşık 2,7 katrilyon) düğüm. Go'da ortalama dallanma faktörünün yaklaşık 250 olduğu tahmin edilmektedir. Go, Minimax için no-go demektir.
+
+### Daha fazla püf noktası: Büyük oyun ağaçlarını yönetme
+
+Büyük oyun ağaçlarını yönetmek için birkaç püf noktası daha gerekir. Birçoğu, 1997'de satranç dünya şampiyonu Garry Kasparov'u yenen IBM'in Deep Blue bilgisayarında çok önemli unsurlardı.
+
+Oyun ağacının sadece küçük bir bölümünü keşfetmeyi göze alabilirsek, bir son düğüme, yani oyunun bittiği ve kazananların bilindiği bir düğüme ulaşmadan önce, minimax özyinelemesini durdurmanın bir yoluna ihtiyacımız var. Bu, hangi oyuncunun sırasını takip edeceği hakkındaki bilgileri içeren ve bir tahta pozisyonu alan bir **buluşsal değerlendirme işlevi** kullanılarak elde edilir ve verilen panodan devam eden oyunun olası sonucunun tahmini olması gereken bir puan verir. konumu.
+
+> Not
+>
+> ## İyi buluşsal
+>
+> Örneğin, satranç için iyi bir buluşsal yöntem, tipik olarak, türlerine göre ağırlıklandırılan malzeme miktarını (parça) sayar: Kraliçe genellikle bir kale kadar iki kat, üç kez bir şövalye veya bir piskopos ve dokuz kez piyon olarak. Tabii ki kral, bütün diğer şeylerden daha değerlidir çünkü onu kaybetmek oyunu kaybetmek anlamına gelir. Ayrıca, tahtanın ortasına yakın stratejik öneme sahip pozisyonları işgal etmek bir avantaj olarak kabul edilir ve sezgisel görüş bu tür pozisyonlara daha yüksek değer verir.
+
+Yukarıda sunulan minimax algoritması , sezgiselin belirli bir derinlik sınırında tüm düğümlerde döndürüldüğü **derinlik sınırlı bir** sürüm elde etmek için minimum değişiklikler gerektirir : derinlik basitçe bir sezgisel değerlendirme işlevini uygulamadan önce oyun ağacının genişletildiği adım sayısını ifade eder. .
+
+
+
+### Alıştırmalar için ilgili sayfaya gidebilirsiniz.
+
+https://course.elementsofai.com/2/3
+
+> Not
+>
+> ## Düz arama kısıtlamaları
+>
+> Herhangi bir problemi çözerek, aralarındaki devletleri ve geçişleri belirleyerek ve mevcut durumdan hedefimize doğru bir yol bularak bir yöntemimiz var gibi görünebilir. Ne yazık ki, gerçek dünya problemlerine AI uygulamak istediğimizde işler daha da karmaşıklaşıyor. Temel olarak, orta derecede karmaşık bir gerçek dünya senaryosundaki devletlerin sayısı bile artmaz ve ayrıntılı araştırma (“kaba kuvvet”) veya zekice sezgisel tarama kullanarak bir çözüm bulamayız. 
+>
+> Ayrıca, bir eylemi seçtiğimizde bizi bir durumdan diğerine götüren geçişler belirleyici değildir. Bu, yapmayı seçtiğimiz şeyin sonucu her zaman tam olarak belirleyemeyeceği anlamına gelir; çünkü kontrolümüz dışında olan ve çoğu zaman bizim için bilinmeyen faktörler vardır.
+>
+> Yukarıda tartıştığımız algoritmalar, örneğin, karıştırılmış bir desteden kart seçerken veya fırlatma zarları gibi rastgelelik gibi bazı rasgelelikler için uyarlanabilir. Bu, belirsizlik ve olasılık kavramını ortaya koymamız gerektiği anlamına gelir. Ancak, basit bulmacalar ve oyunlar yerine gerçek dünya AI'larına yaklaşmaya başlayabiliriz. Bu, Bölüm 3'ün konusu.
+>
+
+### Bölüm 2'yi tamamladıktan sonra:
+
+- Bir gerçek dünya problemini arama problemi olarak formüle edin
+- Oyun ağacı olarak basit bir oyun (tic-tac-toe gibi) formüle edin
+- Sınırlı büyüklükteki bir oyun ağacında en uygun hareketleri bulmak için minimax ilkesini kullanın
+
+### Lütfen bu bölümle ilgili sorularınızı tartışmak ve sorularınızı sormak için [Spectrum'daki](https://spectrum.chat/elementsofai/) AI topluluğunun Elementleri'ne katılın .
+
+### 2. Bölümün sonuna geldiniz!

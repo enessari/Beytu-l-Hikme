@@ -1,4 +1,4 @@
-[^AI]: Yapay Zeka kısaltması
+[^AI]: Yapay Zeka kısaltması..
 
 ## I.AI'yı nasıl tanımlamalıyız? 
 
