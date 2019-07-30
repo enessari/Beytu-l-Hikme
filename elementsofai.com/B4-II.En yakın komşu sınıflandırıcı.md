@@ -38,9 +38,13 @@ Geçerli öneri sistemlerinin manuel olarak girilen meta veriler yerine kulland�
 
 Aşağıdaki alıştırma bu fikri gösterecektir.
 
+---
 
+### Alıştırmalar için ilgili sayfaya gidebilirsiniz.
 
+https://course.elementsofai.com/4/2
 
+---
 
 
 
@@ -50,4 +54,12 @@ Aşağıdaki alıştırma bu fikri gösterecektir.
 
 Yukarıdaki örnekte, sadece altı kullanıcı verisine sahiptik ve tahminimiz muhtemelen çok güvenilmezdi. Bununla birlikte, çevrimiçi alışveriş sitelerinde genellikle milyonlarca kullanıcı bulunur ve ürettikleri veri miktarı çok fazladır. Çoğu durumda, geçmiş davranışları kendinize çok benzeyen ve satın alma geçmişi ilgi alanınıza ilişkin oldukça iyi bir gösterge veren bir kullanıcı grubu vardır.
 
-Bu öngörüler, eğer sistem tarafından tavsiye edilirse, bir ürünün ne kadar iyi çalıştığını değerlendirmeyi zorlaştırırsa, bir ürün satın almanızın muhtemel olması anlamında kendi kendini yerine getiren kehanetler olabilir. Aynı öneri sistemleri, kullanıcılara müzik, filmler, haberler ve sosyal medya içeriği önermek için de kullanılır. Haber ve sosyal medya bağlamında, bu tür sistemler tarafından yaratılan filtreler, filtre baloncuklarına neden olabilir.
+Bu öngörüler aynı zamanda (bir ürün satın alma olasılığınızın daha yüksek olduğu ürün, sistem tarafından size öneriliyorsa) anlamında kendi kendini yerine getiren kehanetler de olabilir; bu, gerçekte ne kadar iyi çalıştıklarını değerlendirmeyi zorlaştırır. Aynı öneri sistemleri, kullanıcılara müzik, filmler, haberler ve sosyal medya içeriği önermek için de kullanılır. Haber ve sosyal medya bağlamında, bu tür sistemler tarafından yaratılan filtreler, filtre baloncuklarına neden olabilir.
+
+---
+
+### Alıştırmalar için ilgili sayfaya gidebilirsiniz.
+
+https://course.elementsofai.com/4/2
+
+---
