@@ -31,7 +31,7 @@ Robotikle ilgili AI problemlerinin birçoğuna makine öğrenmesi yaklaşıyor v
 >
 > İlk bakışta açık olmayabilir, ancak en azından belirli bir özerklik seviyesine sahip olan ve algılayıcıları ve aktüatörleri içeren her türlü araç da robotik olarak sayılır. Öte yandan, müşteri hizmetleri sohbetçisi gibi yazılım tabanlı çözümler, bazen 'yazılım robotları' olarak adlandırılsalar bile, (gerçek) robotik sayılmaz.
 
-
+---
 
 ### Alıştırmalar için ilgili sayfaya gidebilirsiniz.
 
